@@ -1,6 +1,5 @@
 use std::convert::TryFrom;
 use std::fmt;
-use std::future::Future;
 use std::io::Write;
 use std::time::Duration;
 
@@ -12,7 +11,6 @@ use serde_json;
 use super::body::Body;
 use super::client::{Client, Pending};
 use super::multipart;
-use super::response::Response;
 use crate::header::{HeaderMap, HeaderName, HeaderValue, CONTENT_LENGTH, CONTENT_TYPE};
 use crate::{Method, Url};
 use http::{Request as HttpRequest, request::Parts};
@@ -405,7 +403,7 @@ impl RequestBuilder {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn send(self) -> impl Future<Output = Result<Response, crate::Error>> {
+    pub fn send(self) -> Pending {
         match self.request {
             Ok(req) => self.client.execute_request(req),
             Err(err) => Pending::new_err(err),

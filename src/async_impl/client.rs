@@ -1235,7 +1235,11 @@ impl ClientRef {
     }
 }
 
-pub(super) struct Pending {
+/// An opaque type containing a pending response future.
+///
+/// You normally consider this as an `impl Future<Output = Result<Response, Error>>`, but you can
+/// also use the concrete type if you need it.
+pub struct Pending {
     inner: PendingInner,
 }
 
